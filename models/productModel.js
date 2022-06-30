@@ -8,8 +8,8 @@ const productModel = {
   },
   findById: async (id) => {
     const query = 'SELECT * FROM StoreManager.products WHERE id = ?';
-    const [products] = await connection.execute(query, [id]);
-    return products;
+    const [product] = await connection.execute(query, [id]);
+    return product;
   },
 };
 
