@@ -6,3 +6,7 @@ require('dotenv').config();
 app.listen(process.env.PORT, () => {
   console.log(`Escutando na porta ${process.env.PORT}`);
 });
+
+app.get('/products');
+
+app.get('/products/:id');
