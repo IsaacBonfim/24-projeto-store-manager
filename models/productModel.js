@@ -14,10 +14,10 @@ const productModel = {
     return product;
   },
   addProduct: async ({ name }) => {
-    const query = 'INSERT INTO StoreManager.products (name) VALUES (?)';
-    const [{ id }] = await connection.execute(query, [name]);
+    const query = 'INSERT INTO StoreManager.products (name) VALUES (?);';
+    const [{ newId }] = await connection.execute(query, [name]);
 
-    return { id };
+    return { id: newId };
   },
 };
 

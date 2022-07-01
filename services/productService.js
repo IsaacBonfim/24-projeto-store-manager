@@ -18,6 +18,7 @@ const productService = {
   },
   addProduct: async ({ name }) => {
     const { id } = await model.addProduct({ name });
+    
     return { code: 201, product: { id, name } };
   },
 };
