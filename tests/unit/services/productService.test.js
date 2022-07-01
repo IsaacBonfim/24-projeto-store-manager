@@ -66,6 +66,22 @@ describe('Realizando teste da camada Service de produtos', () => {
 
     afterEach(() => sinon.restore());
 
-    
+    it('Verifica se um objeto é retornado', async () => {
+      const product = await service.findById(99);
+      
+      expect(product).to.be.a('object');
+    });
+
+    it('Verifica se o código de resposta é igual a 404', async () => {
+      const product = await service.findById(99);
+      
+      expect(product.code).to.be.equal(404);
+    });
+
+    it('Verifica se é retornado uma mensagem informando que o produto não foi encontrado', async () => {
+      const product = await service.findById(99);
+
+      expect(product.message).to.be.equal('Product not found');
+    });
   });
 });
