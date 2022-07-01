@@ -51,7 +51,7 @@ describe('Realizando teste da camada Controller de produtos', () => {
       expect(res.status.calledWith(200)).to.be.true;
     });
 
-    it('Verifica se o objeto com o produtos retorna em json', async () => {
+    it('Verifica se o objeto com o produto retorna em json', async () => {
       await controller.findById(req, res);
 
       expect(res.json.calledWith(mock[0])).to.be.true;
@@ -78,7 +78,7 @@ describe('Realizando teste da camada Controller de produtos', () => {
       expect(res.status.calledWith(404)).to.be.true;
     });
 
-    it('Verifica se o objeto com o produtos retorna em json contendo uma mensagem', async () => {
+    it('Verifica se o objeto com o produto retorna em json contendo uma mensagem', async () => {
       await controller.findById(req, res);
 
       expect(res.json.calledWith({ message: 'Product not found' })).to.be.true;
