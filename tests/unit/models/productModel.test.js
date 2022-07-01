@@ -39,4 +39,21 @@ describe('Realizando teste da camada Model de produtos', () => {
       expect(products).to.be.deep.equal([mock[0]]);
     });
   });
+  describe('Testando a função "addProduct"', () => {
+    beforeEach(() => sinon.stub(connection, 'execute').resolves([{ insertId: 4 }]));
+
+    afterEach(() => sinon.restore());
+
+    it('Verifica se retorna um objeto', async () => {
+      const product = await model.addProduct({ name: 'Armadura Mark II' });
+      
+      expect(product).to.be.a('object');
+    });
+
+    it('Verifica se é retornado um objeto com a Id do novo produto', async () => {
+      const product = await model.addProduct({ name: 'Armadura Mark II' });
+
+      expect(product).to.be.deep.equal({ id: 4 });
+    });
+  });
 });
