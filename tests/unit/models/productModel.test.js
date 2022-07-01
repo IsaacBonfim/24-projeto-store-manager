@@ -23,7 +23,7 @@ describe('Realizando teste da camada Model de produtos', () => {
     });
   });
   describe('Testando a função "findById"', () => {
-    beforeEach(() => sinon.stub(connection, 'execute').resolves([[mock[0]]]));
+    beforeEach(() => sinon.stub(connection, 'execute').resolves([mock[0]]));
 
     afterEach(() => sinon.restore());
 
