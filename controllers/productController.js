@@ -18,8 +18,12 @@ const productController = {
   },
   addProduct: async (req, res) => {
     const { name } = req.body;
-    const { code, product } = await service.addProduct({ name });
+    const { code, message, product } = await service.addProduct({ name });
     
+    if (message) {
+      return res.status(code).json({ message });
+    }
+
     res.status(code).json(product);
   },
 };
