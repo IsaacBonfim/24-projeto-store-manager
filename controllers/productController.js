@@ -23,7 +23,7 @@ const productController = {
     if (message) {
       return res.status(code).json({ message });
     }
-
+    
     res.status(code).json(product);
   },
 };
