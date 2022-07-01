@@ -40,7 +40,7 @@ describe('Realizando teste da camada Controller de produtos', () => {
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns();
 
-      sinon.stub(service, 'findById').resolves({ code: 200, products: mock[0] });
+      sinon.stub(service, 'findById').resolves({ code: 200, product: mock[0] });
     });
 
     afterEach(() => sinon.restore());
