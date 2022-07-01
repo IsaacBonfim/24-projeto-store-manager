@@ -30,4 +30,31 @@ describe('Realizando teste da camada Controller de produtos', () => {
       expect(res.json.calledWith({ products: mock }));
     });
   });
+
+  describe('Testando a função findById', () => {
+    const req = {};
+    const res = {};
+
+    beforeEach(() => {
+      req.params = { id: 1 };
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      sinon.stub(service, 'findById').resolves({ code: 200, products: mock[0] });
+    });
+
+    afterEach(() => sinon.restore());
+
+    it('Verifica se o código retornado é igual a 200', async () => {
+      await controller.findById(req, res);
+
+      expect(res.status.calledWith(200)).to.be.true;
+    });
+
+    it('Verifica se o objeto com o produtos retorna em json', async () => {
+      await controller.findById(req, res);
+
+      expect(res.json.calledWith(mock[0])).to.be.true;
+    });
+  });
 });
