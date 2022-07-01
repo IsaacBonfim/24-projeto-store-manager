@@ -16,6 +16,10 @@ const productService = {
 
     return { code: 200, product: product[0] };
   },
+  addProduct: async ({ name }) => {
+    const { id } = await model.addProduct({ name });
+    return { code: 201, product: { id, name } };
+  },
 };
 
 module.exports = productService;
