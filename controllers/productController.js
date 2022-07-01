@@ -2,11 +2,7 @@ const service = require('../services/productService');
 
 const productController = {
   getAll: async (_req, res) => {
-    const { code, message, products } = await service.getAll();
-
-    if (message) {
-      return res.status(code).json({ message });
-    }
+    const { code, products } = await service.getAll();
 
     res.status(code).json(products);
   },
