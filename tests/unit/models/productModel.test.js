@@ -4,7 +4,7 @@ const connection = require('../../../models/connection');
 const model = require('../../../models/productModel');
 const mock = require('../mocks/productMock');
 
-describe('Realizando teste da camada Model', () => {
+describe('Realizando teste da camada Model de produtos', () => {
   describe('Testando a função "getAll"', () => {
     beforeEach(() => sinon.stub(connection, 'execute').resolves([mock]));
 
