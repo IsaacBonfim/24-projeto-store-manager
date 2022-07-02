@@ -22,6 +22,7 @@ describe('Realizando teste da camada Model de produtos', () => {
       expect(products).to.be.deep.equal(mock);
     });
   });
+
   describe('Testando a função "findById"', () => {
     beforeEach(() => sinon.stub(connection, 'execute').resolves([[mock[0]]]));
 
@@ -39,6 +40,7 @@ describe('Realizando teste da camada Model de produtos', () => {
       expect(products).to.be.deep.equal([mock[0]]);
     });
   });
+  
   describe('Testando a função "addProduct"', () => {
     beforeEach(() => sinon.stub(connection, 'execute').resolves([{ insertId: 4 }]));
 

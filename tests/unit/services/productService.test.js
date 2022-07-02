@@ -84,4 +84,28 @@ describe('Realizando teste da camada Service de produtos', () => {
       expect(product.message).to.be.equal('Product not found');
     });
   });
+
+  describe('Testando a fução addProduct', () => {
+    beforeEach(() => sinon.stub(model, 'addProduct').resolves({ id: 4 }));
+
+    afterEach(() => sinon.restore());
+
+    it('Verifica se um objeto é retornado', async () => {
+      const product = await service.addProduct({ name: 'Armadura Mark II' });
+      
+      expect(product).to.be.a('object');
+    });
+    
+    it('Verifica se o objeto retornado contem o código de resposta 201', async () => {
+      const product = await service.addProduct({ name: 'Armadura Mark II' });
+
+      expect(product.code).to.be.equal(201);
+    });
+    
+    it('Verifica se é retonado o produto que foi inserido', async () => {
+      const product = await service.addProduct({ name: 'Armadura Mark II' });
+
+      expect(product.product).to.be.deep.equal({ id: 4, name: 'Armadura Mark II' });
+    });
+  });
 });
