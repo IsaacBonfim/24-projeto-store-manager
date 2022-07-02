@@ -115,6 +115,62 @@ describe('Realizando teste da camada Controller de produtos', () => {
   });
 
   describe('Testando a função addProduct, caso o produto inserido seja inválido', () => {
-    
+    describe('Testando caso um nome não seja informado', () => {
+      const req = {};
+      const res = {};
+
+      beforeEach(() => {
+        req.body = { name: 'abc' };
+        res.status = sinon.stub().returns(res);
+        res.json = sinon.stub().returns();
+
+        sinon.stub(service, 'addProduct')
+          .resolves({ code: 422, message: '"name" length must be at least 5 characters long' });
+      });
+
+      afterEach(() => sinon.restore());
+
+      it('Verifica se o objeto retornado contem um código de resposta 422', async () => {
+        await controller.addProduct(req, res);
+
+        expect(res.status.calledWith(422)).to.be.true;
+      });
+
+      it('Verifica se o objeto retornado contem uma mensagem', async () => {
+        await controller.addProduct(req, res);
+
+        expect(res.json.calledWith({ message: '"name" length must be at least 5 characters long' }))
+          .to.be.true;
+      });
+    });
+
+    describe('Testando caso o nome informado tenha menos de 5 letras', () => {
+      const req = {};
+      const res = {};
+
+      beforeEach(() => {
+        req.body = { name: '' };
+        res.status = sinon.stub().returns(res);
+        res.json = sinon.stub().returns();
+
+        sinon.stub(service, 'addProduct')
+          .resolves({ code: 400, message: '"name" is required' });
+      });
+
+      afterEach(() => sinon.restore());
+
+      it('Verifica se o objeto retornado contem um código de resposta 400', async () => {
+        await controller.addProduct(req, res);
+
+        expect(res.status.calledWith(400)).to.be.true;
+      });
+
+      it('Verifica se o objeto retornado contem uma mensagem', async () => {
+        await controller.addProduct(req, res);
+
+        expect(res.json.calledWith({ message: '"name" is required' }))
+          .to.be.true;
+      });
+    });
   });
 });
