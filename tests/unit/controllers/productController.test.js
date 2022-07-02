@@ -84,4 +84,37 @@ describe('Realizando teste da camada Controller de produtos', () => {
       expect(res.json.calledWith({ message: 'Product not found' })).to.be.true;
     });
   });
+
+  describe('Testando a função addProduct', () => {
+    const req = {};
+    const res = {};
+
+    beforeEach(() => {
+      req.body = { name: 'Armadura Mark II' };
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      sinon.stub(service, 'addProduct')
+        .resolves({ code: 201, product: { id: 4, name: 'Armadura Mark II' } });
+    });
+
+    afterEach(() => sinon.restore());
+
+    it('Verifica se o objeto retornado contem o código de resposta 201', async () => {
+      await controller.addProduct(req, res);
+      
+      expect(res.status.calledWith(201)).to.be.true;
+    });
+
+    it('Verifica se é retonado o produto que foi inserido', async () => {
+      await controller.addProduct(req, res);
+
+      expect(res.json.calledWith({ id: 4, name: 'Armadura Mark II' }))
+        .to.be.true;
+    });
+  });
+
+  describe('Testando a função addProduct, caso o produto inserido seja inválido', () => {
+    
+  });
 });
