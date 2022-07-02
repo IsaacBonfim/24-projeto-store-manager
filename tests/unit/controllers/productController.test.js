@@ -115,7 +115,7 @@ describe('Realizando teste da camada Controller de produtos', () => {
   });
 
   describe('Testando a função addProduct, caso o produto inserido seja inválido', () => {
-    describe('Testando caso um nome não seja informado', () => {
+    describe('Testando caso o nome não seja informado', () => {
       const req = {};
       const res = {};
 
