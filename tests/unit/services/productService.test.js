@@ -108,4 +108,40 @@ describe('Realizando teste da camada Service de produtos', () => {
       expect(product.product).to.be.deep.equal({ id: 4, name: 'Armadura Mark II' });
     });
   });
+
+  describe('Testando a função addProduct, caso o produto inserido seja inválido', () => {
+    beforeEach(() => sinon.stub(model, 'addProduct').resolves({ id: 4 }));
+    
+    afterEach(() => sinon.restore());
+
+    it('Verifica se retorna um objeto', async () => {
+      const product = await service.addProduct({ name: 'Armadura Mark II' });
+      
+      expect(product).to.be.a('object');
+    });
+
+    it('Verifica se o objeto retornado contem um código de resposta 400 quando um nome não é informado', async () => {
+      const product = await service.addProduct({});
+      
+      expect(product.code).to.be.equal(400);
+    });
+
+    it('Verifica se quando um nome não é informado, uma mensagem é retornada', async () => {
+      const product = await service.addProduct({});
+      
+      expect(product.message).to.be.equal('"name" is required');
+    });
+
+    it('Verifica se o objeto retornado contem um código de resposta 422, caso o nome informado tiver menos de 5 letras', async () => {
+      const product = await service.addProduct({ name: 'abc' });
+      
+      expect(product.code).to.be.equal(422);
+    });
+
+    it('Verifica se caso o nome tiver menos de 5 letras, uma mensagem é retornada', async () => {
+      const product = await service.addProduct({ name: 'abc' });
+      
+      expect(product.message).to.be.equal('"name" length must be at least 5 characters long');
+    });
+  });
 });
