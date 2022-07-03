@@ -18,21 +18,20 @@ const saleService = {
   getAll: async () => {
     const salesList = await model.getAll();
     const sales = salesList
-      .map(({ date, product_Id: productId, sale_id: saleId, quantity }) => ({
+      .map(({ date, product_id: productId, sale_id: saleId, quantity }) => ({
         date, saleId, productId, quantity,
       }));
-    
     return { code: 200, sales };
   },
   findById: async (id) => {
-    const saleFound = await model.findById(id);
+    const salesList = await model.findById(id);
 
-    if (saleFound.length === 0) {
+    if (salesList.length === 0) {
       return { code: 404, message: 'Sale not found' };
     }
-
-    const sale = saleFound
-      .map(({ date, product_Id: productId, quantity }) => ({
+    
+    const sale = salesList
+      .map(({ date, product_id: productId, quantity }) => ({
         date, productId, quantity,
       }));
     
