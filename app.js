@@ -19,9 +19,9 @@ app.post('/products', rescue(pController.addProduct));
 
 app.get('/products/:id', rescue(pController.findById));
 
-app.post('/sales', rescue(idValidation), rescue(sController.addSale));
-
 app.get('/sales', rescue(sController.getAll));
+
+app.post('/sales', rescue(idValidation), rescue(sController.addSale));
 
 app.get('/sales/:id', rescue(sController.findById));
 

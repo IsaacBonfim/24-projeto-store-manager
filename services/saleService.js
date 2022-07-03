@@ -21,6 +21,7 @@ const saleService = {
       .map(({ date, product_id: productId, sale_id: saleId, quantity }) => ({
         date, saleId, productId, quantity,
       }));
+    
     return { code: 200, sales };
   },
   findById: async (id) => {
