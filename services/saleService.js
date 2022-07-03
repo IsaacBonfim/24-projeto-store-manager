@@ -15,6 +15,15 @@ const saleService = {
 
     return { code: 201, sold: { id: idSale, itemsSold } };
   },
+  getAll: async () => {
+    const salesList = await model.getAll();
+    const sales = salesList
+      .map(({ date, product_Id: productId, sale_id: saleId, quantity }) => ({
+        date, saleId, productId, quantity,
+      }));
+    
+    return { code: 200, sales };
+  },
 };
 
 module.exports = saleService;
