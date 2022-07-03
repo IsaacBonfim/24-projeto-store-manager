@@ -24,6 +24,20 @@ const saleService = {
     
     return { code: 200, sales };
   },
+  findById: async (id) => {
+    const saleFound = await model.findById(id);
+
+    if (saleFound.length === 0) {
+      return { code: 404, message: 'Sale not found' };
+    }
+
+    const sale = saleFound
+      .map(({ date, product_Id: productId, quantity }) => ({
+        date, productId, quantity,
+      }));
+    
+    return { code: 200, sale };
+  },
 };
 
 module.exports = saleService;
