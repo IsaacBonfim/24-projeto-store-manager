@@ -1,7 +1,9 @@
 const express = require('express');
 const rescue = require('express-rescue');
 const bodyParser = require('body-parser');
-const controller = require('./controllers/productController');
+const pController = require('./controllers/productController');
+const sController = require('./controllers/saleController');
+const idValidation = require('./middlewares/saleProductValidate');
 
 const app = express();
 app.use(bodyParser.json());
@@ -11,11 +13,13 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
-app.get('/products', rescue(controller.getAll));
+app.get('/products', rescue(pController.getAll));
 
-app.post('/products', rescue(controller.addProduct));
+app.post('/products', rescue(pController.addProduct));
 
-app.get('/products/:id', rescue(controller.findById));
+app.get('/products/:id', rescue(pController.findById));
+
+app.post('/sales', rescue(idValidation), rescue(sController.addSale));
 
 app.use((err, _req, res, _next) => {
   res.status(500).json({ message: err.message });
