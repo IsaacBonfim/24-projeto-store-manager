@@ -8,7 +8,7 @@ const idValidation = require('./middlewares/saleProductValidate');
 const app = express();
 app.use(bodyParser.json());
 
-//! não remova esse endpoint, é para o avaliador funcionar
+// não remova esse endpoint, é para o avaliador funcionar
 app.get('/', (_request, response) => {
   response.send();
 });
@@ -19,7 +19,11 @@ app.post('/products', rescue(pController.addProduct));
 
 app.get('/products/:id', rescue(pController.findById));
 
+app.get('/sales', rescue(sController.getAll));
+
 app.post('/sales', rescue(idValidation), rescue(sController.addSale));
+
+app.get('/sales/:id', rescue(sController.findById));
 
 app.use((err, _req, res, _next) => {
   res.status(500).json({ message: err.message });
