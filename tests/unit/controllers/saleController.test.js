@@ -18,7 +18,7 @@ describe('Realizando teste da camada Controller de vendas', () => {
 
     afterEach(() => sinon.restore());
 
-    it('Verifica se com as informações certas, o código de resposta é 201', async () => {
+    it('Verifica se ao inserir as informações certas, o código de resposta é 201', async () => {
       req.body = [{ productId: 2, quantity: 3 }];
       
       await controller.addSale(req, res);
