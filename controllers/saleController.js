@@ -7,6 +7,11 @@ const saleController = {
 
     res.status(code).json(sold);
   },
+  getAll: async (_req, res) => {
+    const { code, sales } = await service.getAll();
+    
+    res.status(code).json(sales);
+  },
 };
 
 module.exports = saleController;
