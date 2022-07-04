@@ -144,4 +144,90 @@ describe('Realizando teste da camada Service de produtos', () => {
       expect(product.message).to.be.equal('"name" length must be at least 5 characters long');
     });
   });
+
+  describe('Testando a função updateProduct', () => {
+    beforeEach(() => sinon.stub(model, 'updateProduct').resolves(true));
+
+    afterEach(() => sinon.restore());
+
+    it('Verifica se é retornado um objeto', async () => {
+      const product = await service.updateProduct({ id: 1, name: 'Rompe Tormentas' });
+    
+      expect(product).to.be.a('object');
+    });
+
+    it('Verifica se o objeto retornado contem o código de resposta 200', async () => {
+      const product = await service.updateProduct({ id: 1, name: 'Rompe Tormentas' });
+    
+      expect(product.code).to.be.equal(200);
+    });
+
+    it('Verifica se o produto atualizado é retornado', async () => {
+      const product = await service.updateProduct({ id: 1, name: 'Rompe Tormentas' });
+    
+      expect(product).to.be.deep.equal({ code: 200, id: 1, name: 'Rompe Tormentas' });
+    });
+  });
+
+  describe('Testando a função updateProduct, caso as informações inseridas sejam inválidas', () => {
+    describe('Caso a Id fornecida seja inválida', () => {
+      beforeEach(() => sinon.stub(model, 'updateProduct').resolves(true));
+
+      afterEach(() => sinon.restore());
+
+      it('Verifica se um objeto é retornado', async () => {
+        const product = await service.updateProduct({ id: 99, name: 'Rompe Tormentas' });
+        
+        expect(product).to.be.a('object');
+      });
+
+      it('Verifica se o objeto retornado contem o código de resposta 404', async () => {
+        const product = await service.updateProduct({ id: 99, name: 'Rompe Tormentas' });
+        
+        expect(product.code).to.be.equal(404);
+      });
+
+      it('Verifica se uma mensagem é retornada', async () => {
+        const product = await service.updateProduct({ id: 99, name: 'Rompe Tormentas' });
+        
+        expect(product.message).to.be.equal('Product not found');
+      });
+    });
+
+    describe('Caso o nome fornecido seja inválido', () => {
+      beforeEach(() => sinon.stub(model, 'updateProduct').resolves(true));
+
+      afterEach(() => sinon.restore());
+
+      it('verifica se é retornado um objeto', async () => {
+        const product = await service.updateProduct({ id: 1, name: 'abc' });
+        
+        expect(product).to.be.a('object');
+      });
+      
+      it('Verifica se o objeto retornado contem o código de resposta 400, caso um nome não seja informado', async () => {
+        const product = await service.updateProduct({ id: 1 });
+        
+        expect(product.code).to.be.equal(400);
+      });
+      
+      it('Verifica se o objeto retornado contem uma mensagem, caso um nome não seja informado', async () => {
+        const product = await service.updateProduct({ id: 1 });
+        
+        expect(product.message).to.be.equal('"name" is required');
+      });
+
+      it('Verifica se o objeto retornado contem o código de resposta 422, caso o nome informado tenha menos de 5 letras', async () => {
+        const product = await service.updateProduct({ id: 1, name: 'abc' });
+        
+        expect(product.code).to.be.equal(422);
+      });
+      
+      it('Verifica se o objeto retornado contem uma mensagem, caso o nome informado tenha menos de 5 letras', async () => {
+        const product = await service.updateProduct({ id: 1, name: 'abc' });
+        
+        expect(product.message).to.be.equal('"name" length must be at least 5 characters long');
+      });
+    });
+  });
 });
