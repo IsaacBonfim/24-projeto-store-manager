@@ -2,7 +2,7 @@ const sinon = require('sinon');
 const { expect } = require('chai');
 const service = require('../../../services/saleService');
 const controller = require('../../../controllers/saleController');
-const { salesMockCC } = require('../mocks/saleMock');
+const { salesMockCC, saleIdMockCC } = require('../mocks/saleMock');
 
 describe('Realizando teste da camada Controller de vendas', () => {
   describe('Testando a função addSale', () => {
@@ -51,6 +51,60 @@ describe('Realizando teste da camada Controller de vendas', () => {
       await controller.getAll(req, res);
       
       expect(res.json.calledWith(salesMockCC)).to.be.true;
+    });
+  });
+
+  describe('Testando a função findById', () => {
+    const res = {};
+    const req = {};
+
+    beforeEach(() => {
+      req.params = { id: 1 };
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      sinon.stub(service, 'findById').resolves({ code: 200, sale: saleIdMockCC });
+    });
+
+    afterEach(() => sinon.restore());
+
+    it('Verifica se é retornado o código de resposta 200', async () => {
+      await controller.findById(req, res);
+    
+      expect(res.status.calledWith(200)).to.be.true;
+    });
+
+    it('Verifica se é retornado um array com as vendas', async () => {
+      await controller.findById(req, res);
+    
+      expect(res.json.calledWith(saleIdMockCC)).to.be.true;
+    });
+  });
+
+  describe('Testando a função FindById, caso uma Id inválida seja informada', () => {
+    const req = {};
+    const res = {};
+
+    beforeEach(() => {
+      req.params = { id: 99 };
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      sinon.stub(service, 'findById').resolves({ code: 404, message: 'Sale not found' });
+    });
+
+    afterEach(() => sinon.restore());
+
+    it('Verifica se é retornado o código de resposta 404', async () => {
+      await controller.findById(req, res);
+      
+      expect(res.status.calledWith(404)).to.be.true;
+    });
+
+    it('Verifica se uma mensagem é retornada', async () => {
+      await controller.findById(req, res);
+    
+      expect(res.json.calledWith({ message: 'Sale not found' })).to.be.true;
     });
   });
 });
