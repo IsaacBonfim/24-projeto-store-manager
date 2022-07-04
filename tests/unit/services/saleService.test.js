@@ -2,6 +2,7 @@ const sinon = require('sinon');
 const { expect } = require('chai');
 const model = require('../../../models/saleModel');
 const service = require('../../../services/saleService');
+const { salesMockSC, salesMockCC } = require('../mocks/saleMock');
 
 describe('Realizando teste da camada Service de vendas', () => {
   describe('Testando a função addSale', () => {
@@ -35,6 +36,30 @@ describe('Realizando teste da camada Service de vendas', () => {
       
       expect(sale.sold).to.be.deep
         .equal({ id: { saleId: 3 }, itemsSold: [{ productId: 2, quantity: 2 }]});
+    });
+  });
+
+  describe('Testando a função getAll', () => {
+    beforeEach(() => sinon.stub(model, 'getAll').resolves(salesMockSC));
+
+    afterEach(() => sinon.restore());
+
+    it('Verifica se um objeto é retornado', async () => {
+      const sales = await service.getAll();
+
+      expect(sales).to.be.a('object');
+    });
+
+    it('Verificar se o objeto retornado possui um código de resposta 200', async () => {
+      const sales = await service.getAll();
+
+      expect(sales.code).to.be.equal(200);
+    });
+
+    it('Verificar se o objeto retornado possui um array com as vendas', async () => {
+      const salesList = await service.getAll();
+
+      expect(salesList.sales).to.be.deep.equal(salesMockCC);
     });
   });
 });
