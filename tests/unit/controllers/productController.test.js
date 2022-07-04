@@ -345,7 +345,7 @@ describe('Realizando teste da camada Controller de produtos', () => {
       expect(res.status.calledWith(404)).to.be.true;
     });
 
-    it('Verifica se uma mensagem é retornada', async () => {
+    it('Verifica se é retornado uma mensagem', async () => {
       await controller.deleteProduct(req, res);
       
       expect(res.json.calledWith({ message: 'Product not found' }))
