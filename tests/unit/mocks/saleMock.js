@@ -17,4 +17,6 @@ const salesMock = [
     "product_id": 3,
     "quantity": 15
   }
-]
+];
+
+module.exports = salesMock;
