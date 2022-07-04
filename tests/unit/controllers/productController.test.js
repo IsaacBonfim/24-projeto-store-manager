@@ -299,4 +299,57 @@ describe('Realizando teste da camada Controller de produtos', () => {
       });
     });
   });
+
+  describe('Testando a função deleteProduct', () => {
+    const req = {};
+    const res = {};
+
+    beforeEach(() => {
+      req.params = { id: 1 };
+      
+      res.status = sinon.stub().returns(res);
+      res.end = sinon.stub().returns();
+
+      sinon.stub(service, 'deleteProduct').resolves({ code: 204 });
+      sinon.stub(model, 'findById').resolves([mock[0]]);
+    });
+
+    afterEach(() => sinon.restore());
+
+    it('Verifica se é retornado o código de resposta 204', async () => {
+      await controller.deleteProduct(req, res);
+      
+      expect(res.status.calledWith(204)).to.be.true;
+    });
+  });
+
+  describe('Testando a função deleteProduct, caso o Id informado seja inválido', () => {
+    const req = {};
+    const res = {};
+
+    beforeEach(() => {
+      req.params = { id: 99 };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      sinon.stub(service, 'deleteProduct')
+        .resolves({ code: 404, message: 'Product not found' });
+    });
+
+    afterEach(() => sinon.restore());
+
+    it('Verifica se é retornado o código de resposta 404', async () => {
+      await controller.deleteProduct(req, res);
+      
+      expect(res.status.calledWith(404)).to.be.true;
+    });
+
+    it('Verifica se uma mensagem é retornada', async () => {
+      await controller.deleteProduct(req, res);
+      
+      expect(res.json.calledWith({ message: 'Product not found' }))
+        .to.be.true;
+    });
+  });
 });
