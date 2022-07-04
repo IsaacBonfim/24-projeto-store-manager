@@ -146,7 +146,10 @@ describe('Realizando teste da camada Service de produtos', () => {
   });
 
   describe('Testando a função updateProduct', () => {
-    beforeEach(() => sinon.stub(model, 'updateProduct').resolves(true));
+    beforeEach(() => {
+      sinon.stub(model, 'updateProduct').resolves(true);
+      sinon.stub(model, 'findById').resolves([mock[0]]);
+    });
 
     afterEach(() => sinon.restore());
 
@@ -228,6 +231,54 @@ describe('Realizando teste da camada Service de produtos', () => {
         
         expect(product.message).to.be.equal('"name" length must be at least 5 characters long');
       });
+    });
+  });
+
+  describe('Testando a função deleteProduct', () => {
+    beforeEach(() => {
+      sinon.stub(model, 'deleteProduct').resolves(true);
+      sinon.stub(model, 'findById').resolves([mock[0]]);
+    });
+
+    afterEach(() => sinon.restore());
+
+    it('Verifica se um objeto é retornado', async () => {
+      const product = await service.deleteProduct(1);
+      
+      expect(product).to.be.a('object');
+    });
+
+    it('Verifica se o objeto retornado contem o código de resposta 204', async () => {
+      const product = await service.deleteProduct(1);
+      
+      expect(product).to.be.deep.equal({ code: 204 });
+    });
+  });
+
+  describe('Testando a função deleteProduct, caso o Id informado seja inválido', () => {
+    beforeEach(() => {
+      sinon.stub(model, 'deleteProduct').resolves(true);
+      sinon.stub(model, 'findById').resolves([]);
+    });
+    
+    afterEach(() => sinon.restore());
+    
+    it('Verifica se um objeto é retornado', async () => {
+      const product = await service.deleteProduct(99);
+    
+      expect(product).to.be.a('object');
+    });
+    
+    it('Verifica se o objeto retornado contem o código de resposta 404', async () => {
+      const product = await service.deleteProduct(99);
+    
+      expect(product.code).to.be.equal(404);
+    });
+    
+    it('Verifica se o objeto retornado contem uma mensagem', async () => {
+      const product = await service.deleteProduct(99);
+    
+      expect(product.message).to.be.equal('Product not found');
     });
   });
 });
