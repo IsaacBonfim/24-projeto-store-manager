@@ -26,6 +26,7 @@ const productModel = {
 
     return true;
   },
+  
 };
 
 module.exports = productModel;
