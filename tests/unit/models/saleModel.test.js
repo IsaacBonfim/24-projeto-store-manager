@@ -2,7 +2,7 @@ const sinon = require('sinon');
 const { expect } = require('chai');
 const connection = require('../../../models/connection');
 const model = require('../../../models/saleModel');
-const mock = require('../mocks/saleMock');
+const { salesMockSC } = require('../mocks/saleMock');
 
 describe('Realizando teste da camada Model de vendas', () => {
   describe('Testando a função addSale', () => {
@@ -32,7 +32,7 @@ describe('Realizando teste da camada Model de vendas', () => {
   });
 
   describe('Testando a função getAll', () => {
-    beforeEach(() => sinon.stub(connection, 'execute').returns([mock]));
+    beforeEach(() => sinon.stub(connection, 'execute').returns([salesMockSC]));
 
     afterEach(() => sinon.restore());
 
@@ -45,12 +45,12 @@ describe('Realizando teste da camada Model de vendas', () => {
     it('Verifica se o array de compras é retornado corretamente', async () => {
       const sales = await model.getAll();
       
-      expect(sales).to.be.deep.equal(mock);
+      expect(sales).to.be.deep.equal(salesMockSC);
     });
   });
 
   describe('Testando a função findById', () => {
-    beforeEach(() => sinon.stub(connection, 'execute').returns([[mock[0]]]));
+    beforeEach(() => sinon.stub(connection, 'execute').returns([[salesMockSC[0]]]));
 
     afterEach(() => sinon.restore());
 
@@ -63,7 +63,7 @@ describe('Realizando teste da camada Model de vendas', () => {
     it('Verifica se o array de compras é retornado corretamente', async () => {
       const sales = await model.findById();
     
-      expect(sales[0]).to.be.deep.equal(mock[0]);
+      expect(sales[0]).to.be.deep.equal(salesMockSC[0]);
     });
   });
 });
