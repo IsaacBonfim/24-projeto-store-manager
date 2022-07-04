@@ -1,5 +1,6 @@
 const sinon = require('sinon');
 const { expect } = require('chai');
+const model = require('../../../models/productModel');
 const service = require('../../../services/productService');
 const controller = require('../../../controllers/productController');
 const mock = require('../mocks/productMock');
@@ -169,6 +170,131 @@ describe('Realizando teste da camada Controller de produtos', () => {
         await controller.addProduct(req, res);
 
         expect(res.json.calledWith({ message: '"name" is required' }))
+          .to.be.true;
+      });
+    });
+  });
+
+  describe('Testando a função updateProduct', () => {
+    const req = {};
+    const res = {};
+
+    beforeEach(() => {
+      req.params = { id: 1 };
+      req.body = { name: 'Rompe Tormentas' };
+      
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+
+      sinon.stub(service, 'updateProduct')
+        .resolves({ code: 200, id: 1, name: 'Rompe Tormentas' });
+      
+      sinon.stub(model, 'findById').resolves([{ id: 1, name: 'Martelo de Thor' }]);
+    });
+
+    afterEach(() => sinon.restore());
+
+    it('Verifica se o código de resposta é 200', async () => {
+      await controller.updateProduct(req, res);
+      
+      expect(res.status.calledWith(200)).to.be.true;
+    });
+
+    it('Verifica se é retornado o produto atualizado', async () => {
+      await controller.updateProduct(req, res);
+      
+      expect(res.json.calledWith({ id: 1, name: 'Rompe Tormentas' })).to.be.true;
+    });
+  });
+
+  describe('Testando a função updateProduct, caso as informações inseridas sejam inválidas', () => {
+    describe('Caso o Id informado seja inválido', () => {
+      const req = {};
+      const res = {};
+      
+      beforeEach(() => {
+        req.params = { id: 99 };
+        req.body = { name: 'Manopla do Infinito' };
+
+        res.status = sinon.stub().returns(res);
+        res.json = sinon.stub().returns();
+        
+        sinon.stub(service, 'addProduct')
+          .resolves({ code: 404, message: 'Product not found' });
+      });
+
+      afterEach(() => sinon.restore());
+
+      it('Verifica se o código de resposta é 404', async () => {
+        await controller.updateProduct(req, res);
+        
+        expect(res.status.calledWith(404)).to.be.true;
+      });
+
+      it('Verifica se uma mensagem é retornada', async () => {
+        await controller.updateProduct(req, res);
+        
+        expect(res.json.calledWith({ message: 'Product not found' })).to.be.true;
+      });
+    });
+
+    describe('Caso não seja informado um nome', () => {
+      const req = {};
+      const res = {};
+
+      beforeEach(() => {
+        req.params = { id: 1 };
+        req.body = { name: '' };
+
+        res.status = sinon.stub().returns(res);
+        res.json = sinon.stub().returns();
+
+        sinon.stub(service, 'updateProduct')
+          .resolves({ code: 400, message: '"name" is required' });
+      });
+
+      afterEach(() => sinon.restore());
+
+      it('Verifica se o código de resposta é 400', async () => {
+        await controller.updateProduct(req, res);
+        
+        expect(res.status.calledWith(400)).to.be.true;
+      });
+
+      it('Verifica se uma mensagem é retornada', async () => {
+        await controller.updateProduct(req, res);
+        
+        expect(res.json.calledWith({ message: '"name" is required' })).to.be.true;
+      });
+    });
+
+    describe('Caso o nome informado tenha menos de 5 letras', () => {
+      const req = {};
+      const res = {};
+
+      beforeEach(() => {
+        req.params = { id: 1 };
+        req.body = { name: 'abc' };
+
+        res.status = sinon.stub().returns(res);
+        res.json = sinon.stub().returns();
+        
+        sinon.stub(service, 'updateProduct')
+          .resolves({ code: 422, message: '"name" length must be at least 5 characters long' });
+      });
+
+      afterEach(() => sinon.restore());
+
+      it('Verifica se o código de resposta é 422', async () => {
+        await controller.updateProduct(req, res);
+        
+        expect(res.status.calledWith(422)).to.be.true;
+      });
+
+      it('Verifica se uma mensagem é retornada', async () => {
+        await controller.updateProduct(req, res);
+        
+        expect(res.json.calledWith({ message: '"name" length must be at least 5 characters long' }))
           .to.be.true;
       });
     });
