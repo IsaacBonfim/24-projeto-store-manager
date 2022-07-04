@@ -58,4 +58,22 @@ describe('Realizando teste da camada Model de produtos', () => {
       expect(product).to.be.deep.equal({ id: 4 });
     });
   });
+
+  describe('Testando a função updateProduct', () => {
+    beforeEach(() => sinon.stub(connection, 'execute').resolves());
+
+    afterEach(() => sinon.restore());
+
+    it('Verifica se o retorno é booleano', async () => {
+      const product = await model.updateProduct({ id: 1, name: 'Martelo' });
+      
+      expect(product).to.be.a('boolean');
+    });
+
+    it('Verifica se ao realizar uma atualização retorna "true"', async () => {
+      const product = await model.updateProduct({ id: 1, name: 'Rompe Tormentas' });
+      
+      expect(product).to.be.equal(true);
+    });
+  });
 });
