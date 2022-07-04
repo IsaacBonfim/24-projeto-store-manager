@@ -48,6 +48,17 @@ const productService = {
 
     return { code: 200, id, name };
   },
+  deleteProduct: async (id) => {
+    const product = model.findById(id);
+
+    if (product.length === 0) {
+      return { code: 404, message: 'Product not found' };
+    }
+
+    await model.deleteProduct(id);
+
+    return { code: 204 };
+  },
 };
 
 module.exports = productService;
