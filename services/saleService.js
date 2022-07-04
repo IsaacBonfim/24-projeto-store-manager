@@ -3,7 +3,7 @@ const model = require('../models/saleModel');
 let idSale;
 
 const addProduct = ({ productId, quantity }) => {
-  model.soldProducts({ idSale, productId, quantity });
+  model.soldProducts({ saleId: idSale, productId, quantity });
 
   return { productId, quantity };
 };
