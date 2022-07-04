@@ -47,7 +47,7 @@ describe('Realizando teste da camada Controller de vendas', () => {
       expect(res.status.calledWith(200)).to.be.true;
     });
 
-    it('Verificar se é retornado o array de vendas', async () => {
+    it('Verifica se é retornado o array de vendas', async () => {
       await controller.getAll(req, res);
       
       expect(res.json.calledWith(salesMockCC)).to.be.true;
@@ -81,7 +81,7 @@ describe('Realizando teste da camada Controller de vendas', () => {
     });
   });
 
-  describe('Testando a função FindById, caso uma Id inválida seja informada', () => {
+  describe('Testando a função findById, caso uma Id inválida seja informada', () => {
     const req = {};
     const res = {};
 

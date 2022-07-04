@@ -64,7 +64,7 @@ describe('Realizando teste da camada Service de vendas', () => {
     });
   });
 
-  describe('Testando a função FindById', () => {
+  describe('Testando a função findById', () => {
     beforeEach(() => sinon.stub(model, 'findById').resolves(saleIdMockSC));
     
     afterEach(() => sinon.restore());
@@ -75,20 +75,20 @@ describe('Realizando teste da camada Service de vendas', () => {
       expect(sale).to.be.a('object');
     });
 
-    it('Verificar se o objeto retornado possui um código de resposta 200', async () => {
+    it('Verifica se o objeto retornado possui um código de resposta 200', async () => {
       const sale = await service.findById(1);
     
       expect(sale.code).to.be.equal(200);
     });
     
-    it('Verificar se o objeto retornado possui um array com as vendas', async () => {
+    it('Verifica se o objeto retornado possui um array com as vendas', async () => {
       const salesList = await service.findById(1);
     
       expect(salesList.sale).to.be.deep.equal(saleIdMockCC);
     });
   });
 
-  describe('Testando a função FindById, caso uma Id inválida seja informada', () => {
+  describe('Testando a função findById, caso uma Id inválida seja informada', () => {
     beforeEach(() => sinon.stub(model, 'findById').resolves([]));
     
     afterEach(() => sinon.restore());
@@ -99,13 +99,13 @@ describe('Realizando teste da camada Service de vendas', () => {
       expect(sale).to.be.a('object');
     });
 
-    it('Verificar se o objeto retornado possui um código de resposta 404', async () => {
+    it('Verifica se o objeto retornado possui um código de resposta 404', async () => {
       const sale = await service.findById(1);
       
       expect(sale.code).to.be.equal(404);
     });
 
-    it('Verificar se o objeto retornado possui uma mensagem', async () => {
+    it('Verifica se o objeto retornado possui uma mensagem', async () => {
       const sale = await service.findById(1);
       
       expect(sale.message).to.be.equal('Sale not found');

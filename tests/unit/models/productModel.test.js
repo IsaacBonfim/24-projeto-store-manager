@@ -5,7 +5,7 @@ const model = require('../../../models/productModel');
 const mock = require('../mocks/productMock');
 
 describe('Realizando teste da camada Model de produtos', () => {
-  describe('Testando a função "getAll"', () => {
+  describe('Testando a função getAll', () => {
     beforeEach(() => sinon.stub(connection, 'execute').resolves([mock]));
 
     afterEach(() => sinon.restore());
@@ -23,7 +23,7 @@ describe('Realizando teste da camada Model de produtos', () => {
     });
   });
 
-  describe('Testando a função "findById"', () => {
+  describe('Testando a função findById', () => {
     beforeEach(() => sinon.stub(connection, 'execute').resolves([[mock[0]]]));
 
     afterEach(() => sinon.restore());
@@ -41,7 +41,7 @@ describe('Realizando teste da camada Model de produtos', () => {
     });
   });
   
-  describe('Testando a função "addProduct"', () => {
+  describe('Testando a função addProduct', () => {
     beforeEach(() => sinon.stub(connection, 'execute').resolves([{ insertId: 4 }]));
 
     afterEach(() => sinon.restore());
