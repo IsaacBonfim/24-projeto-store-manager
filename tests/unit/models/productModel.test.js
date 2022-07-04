@@ -76,4 +76,22 @@ describe('Realizando teste da camada Model de produtos', () => {
       expect(product).to.be.equal(true);
     });
   });
+
+  describe('Testando a função deleteProduct', () => {
+    beforeEach(() => sinon.stub(connection, 'execute').resolves());
+
+    afterEach(() => sinon.restore());
+
+    it('Verifica se o retorno é booleano', async () => {
+      const product = await model.deleteProduct(1);
+      
+      expect(product).to.be.a('boolean');
+    });
+
+    it('Verifica se ao deletar um produto retorna "true"', async () => {
+      const product = await model.deleteProduct(1);
+      
+      expect(product).to.be.equal(true);
+    });
+  });
 });
