@@ -48,4 +48,22 @@ describe('Realizando teste da camada Model de vendas', () => {
       expect(sales).to.be.deep.equal(mock);
     });
   });
+
+  describe('Testando a função findById', () => {
+    beforeEach(() => sinon.stub(connection, 'execute').returns([[mock[0]]]));
+
+    afterEach(() => sinon.restore());
+
+    it('Verifica se um array é retornado', async () => {
+      const sales = await model.findById();
+    
+      expect(sales).to.be.a('array');
+    });
+
+    it('Verifica se o array de compras é retornado corretamente', async () => {
+      const sales = await model.findById();
+    
+      expect(sales[0]).to.be.deep.equal(mock[0]);
+    });
+  });
 });
