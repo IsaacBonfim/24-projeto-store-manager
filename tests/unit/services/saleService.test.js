@@ -2,7 +2,8 @@ const sinon = require('sinon');
 const { expect } = require('chai');
 const model = require('../../../models/saleModel');
 const service = require('../../../services/saleService');
-const { salesMockSC, salesMockCC } = require('../mocks/saleMock');
+const { salesMockSC, salesMockCC, saleIdMockSC,
+  saleIdMockCC } = require('../mocks/saleMock');
 
 describe('Realizando teste da camada Service de vendas', () => {
   describe('Testando a função addSale', () => {
@@ -60,6 +61,54 @@ describe('Realizando teste da camada Service de vendas', () => {
       const salesList = await service.getAll();
 
       expect(salesList.sales).to.be.deep.equal(salesMockCC);
+    });
+  });
+
+  describe('Testando a função FindById', () => {
+    beforeEach(() => sinon.stub(model, 'findById').resolves(saleIdMockSC));
+    
+    afterEach(() => sinon.restore());
+
+    it('Verifica se um objeto é retornado', async () => {
+      const sale = await service.findById(1);
+    
+      expect(sale).to.be.a('object');
+    });
+
+    it('Verificar se o objeto retornado possui um código de resposta 200', async () => {
+      const sale = await service.findById(1);
+    
+      expect(sale.code).to.be.equal(200);
+    });
+    
+    it('Verificar se o objeto retornado possui um array com as vendas', async () => {
+      const salesList = await service.findById(1);
+    
+      expect(salesList.sale).to.be.deep.equal(saleIdMockCC);
+    });
+  });
+
+  describe('Testando a função FindById, caso uma Id inválida seja informada', () => {
+    beforeEach(() => sinon.stub(model, 'findById').resolves([]));
+    
+    afterEach(() => sinon.restore());
+
+    it('Verifica se um objeto é retornado', async () => {
+      const sale = await service.findById(1);
+
+      expect(sale).to.be.a('object');
+    });
+
+    it('Verificar se o objeto retornado possui um código de resposta 404', async () => {
+      const sale = await service.findById(1);
+      
+      expect(sale.code).to.be.equal(404);
+    });
+
+    it('Verificar se o objeto retornado possui uma mensagem', async () => {
+      const sale = await service.findById(1);
+      
+      expect(sale.message).to.be.equal('Sale not found');
     });
   });
 });
