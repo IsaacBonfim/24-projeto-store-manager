@@ -352,4 +352,32 @@ describe('Realizando teste da camada Controller de produtos', () => {
         .to.be.true;
     });
   });
+
+  describe('Testando a função search', () => {
+    const req = {};
+    const res = {};
+
+    beforeEach(() => {
+      req.query = { q: '' };
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      
+      sinon.stub(service, 'search').resolves({ code: 200, products: mock });
+    });
+
+    afterEach(() => sinon.restore());
+
+    it('Verifica se é retornado o código de resposta 200', async () => {
+      await controller.search(req, res);
+      
+      expect(res.status.calledWith(200)).to.be.true;
+    });
+    
+    it('Verifica se é retornado um array com os produtos', async () => {
+      await controller.search(req, res);
+      
+      expect(res.json.calledWith(mock)).to.be.true;
+    });
+  });
 });

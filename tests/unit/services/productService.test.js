@@ -287,19 +287,19 @@ describe('Realizando teste da camada Service de produtos', () => {
 
     afterEach(() => sinon.restore());
 
-    it('returns an object', async () => {
+    it('Verifica se um objeto é retornado', async () => {
       const products = await service.search('Escudo');
     
       expect(products).to.be.a('object');
     });
     
-    it('returns an object with the code 200', async () => {
+    it('Verifica se o objeto retornado contem o código de resposta 200', async () => {
       const products = await service.search('Escudo');
     
       expect(products.code).to.equal(200);
     });
     
-    it('returns an object with the array of matches', async () => {
+    it('Verifica se o objeto retornado contem um array com os produtos encontrados', async () => {
       const productList = await service.search('Escudo');
     
       expect(productList.products).to.be.deep.equal([mock[2]]);
