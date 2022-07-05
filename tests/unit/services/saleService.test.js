@@ -111,4 +111,52 @@ describe('Realizando teste da camada Service de vendas', () => {
       expect(sale.message).to.be.equal('Sale not found');
     });
   });
+
+  describe('Testando a função deleteSale', () => {
+    beforeEach(() => {
+      sinon.stub(model, 'deleteSale').resolves(true);
+      sinon.stub(model, 'findById').resolves(saleIdMockSC);
+    });
+
+    afterEach(() => sinon.restore());
+
+    it('Verifica se um objeto é retornado', async () => {
+      const sale = await service.deleteSale(1);
+      
+      expect(sale).to.be.a('object');
+    });
+
+    it('Verifica se o objeto retornado contem o código de resposta 204', async () => {
+      const sale = await service.deleteSale(1);
+      
+      expect(sale).to.be.deep.equal({ code: 204 });
+    });
+  });
+
+  describe('Testando a função deleteSale, caso o Id informado seja inválido', () => {
+    beforeEach(() => {
+      sinon.stub(model, 'deleteSale').resolves(true);
+      sinon.stub(model, 'findById').resolves([]);
+    });
+
+    afterEach(() => sinon.restore());
+
+    it('Verifica se um objeto é retornado', async () => {
+      const sale = await service.deleteSale(99);
+    
+      expect(sale).to.be.a('object');
+    });
+    
+    it('Verifica se o objeto retornado contem o código de resposta 404', async () => {
+      const sale = await service.deleteSale(99);
+    
+      expect(sale.code).to.be.equal(404);
+    });
+    
+    it('Verifica se o objeto retornado contem uma mensagem', async () => {
+      const sale = await service.deleteSale(99);
+    
+      expect(sale.message).to.be.equal('Sale not found');
+    });
+  });
 });
