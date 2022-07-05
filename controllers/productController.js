@@ -48,12 +48,8 @@ const productController = {
     res.status(code).end();
   },
   search: async (req, res) => {
-    let { q } = req.query;
-    
-    if (!q) {
-      q = '';
-    }
-    
+    const { q } = req.query;
+        
     const { code, products } = await service.search(q);
     
     res.status(code).json(products);

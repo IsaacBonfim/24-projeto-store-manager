@@ -94,4 +94,40 @@ describe('Realizando teste da camada Model de produtos', () => {
       expect(product).to.be.equal(true);
     });
   });
+
+  describe('Testando a função search', () => {
+    beforeEach(() => sinon.stub(connection, 'execute').returns([[mock[2]]]));
+
+    afterEach(() => sinon.restore());
+
+    it('Verifica se é retornado um array', async () => {
+      const product = await model.search('Escudo');
+
+      expect(product).to.be.a('array');
+    });
+
+    it('Verifica se o array retornado contem o produto correto', async () => {
+      const product = await model.search('Escudo');
+
+      expect(product).to.be.deep.equal([mock[2]]);
+    });
+  });
+
+  describe('Testando a função search sem que um produto seja informado para busca', () => {
+    beforeEach(() => sinon.stub(connection, 'execute').returns([mock]));
+
+    afterEach(() => sinon.restore());
+
+    it('Verifica se é retornado um array', async () => {
+      const products = await model.search('');
+    
+      expect(products).to.be.a('array');
+    });
+    
+    it('Verifica se o array retornado contem todos os produtos', async () => {
+      const products = await model.search('');
+    
+      expect(products).to.be.deep.equal(mock);
+    });
+  });
 });
