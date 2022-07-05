@@ -22,6 +22,16 @@ const saleController = {
     
     res.status(code).json(sale);
   },
+  deleteSale: async (req, res) => {
+    const { id } = req.params;
+    const { code, message } = await service.deleteSale(id);
+
+    if (message) {
+      return res.status(code).json({ message });
+    }
+
+    res.status(code).end();
+  },
 };
 
 module.exports = saleController;
