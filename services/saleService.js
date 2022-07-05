@@ -57,15 +57,15 @@ const saleService = {
   updateSale: async (id, products) => {
     const sale = await saleValidation(id);
 
-    if (sale) {
+    if (!sale) {
       return { code: 404, message: 'Sale not found' };
     }
 
     idSale = id;
 
-    const updatedList = products.map(updateProds);
+    const itemsUpdated = products.map(updateProds);
 
-    return { code: 200, update: { saleId: id, updatedList } };
+    return { code: 200, update: { saleId: id, itemsUpdated } };
   },
   deleteSale: async (id) => {
     const sale = await model.findById(id);

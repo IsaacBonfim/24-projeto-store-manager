@@ -28,7 +28,7 @@ const saleController = {
     const { code, update, message } = await service.updateSale(id, body);
 
     if (message) {
-      return res.statu(code).json({ message });
+      return res.status(code).json({ message });
     }
 
     res.status(code).json(update);

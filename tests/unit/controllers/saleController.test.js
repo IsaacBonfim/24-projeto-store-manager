@@ -142,7 +142,7 @@ describe('Realizando teste da camada Controller de vendas', () => {
       res.json = sinon.stub().returns();
 
       sinon.stub(service, 'deleteSale')
-        .resolves({ code: 404, message: 'Product not found' });
+        .resolves({ code: 404, message: 'Sale not found' });
     });
     
     afterEach(() => sinon.restore());
@@ -156,7 +156,7 @@ describe('Realizando teste da camada Controller de vendas', () => {
     it('Verifica se é retornado uma mensagem', async () => {
       await controller.deleteSale(req, res);
     
-      expect(res.json.calledWith({ message: 'Product not found' })).to.be.true;
+      expect(res.json.calledWith({ message: 'Sale not found' })).to.be.true;
     });
   });
 });
