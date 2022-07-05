@@ -29,6 +29,8 @@ app.post('/sales', rescue(idValidation), rescue(sController.addSale));
 
 app.get('/sales/:id', rescue(sController.findById));
 
+app.delete('/sales/:id', rescue(sController.deleteSale));
+
 app.use((err, _req, res, _next) => {
   res.status(500).json({ message: err.message });
 });
