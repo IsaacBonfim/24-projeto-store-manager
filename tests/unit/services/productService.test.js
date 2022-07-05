@@ -281,4 +281,28 @@ describe('Realizando teste da camada Service de produtos', () => {
       expect(product.message).to.be.equal('Product not found');
     });
   });
+
+  describe('Testando a função search', () => {
+    beforeEach(() => sinon.stub(model, 'search').resolves([mock[2]]));
+
+    afterEach(() => sinon.restore());
+
+    it('returns an object', async () => {
+      const products = await service.search('Escudo');
+    
+      expect(products).to.be.a('object');
+    });
+    
+    it('returns an object with the code 200', async () => {
+      const products = await service.search('Escudo');
+    
+      expect(products.code).to.equal(200);
+    });
+    
+    it('returns an object with the array of matches', async () => {
+      const productList = await service.search('Escudo');
+    
+      expect(productList.products).to.be.deep.equal([mock[2]]);
+    });
+  });
 });
