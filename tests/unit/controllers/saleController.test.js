@@ -1,5 +1,6 @@
 const sinon = require('sinon');
 const { expect } = require('chai');
+const model = require('../../../models/saleModel');
 const service = require('../../../services/saleService');
 const controller = require('../../../controllers/saleController');
 const { salesMockCC, saleIdMockCC } = require('../mocks/saleMock');
@@ -155,6 +156,72 @@ describe('Realizando teste da camada Controller de vendas', () => {
     
     it('Verifica se é retornado uma mensagem', async () => {
       await controller.deleteSale(req, res);
+    
+      expect(res.json.calledWith({ message: 'Sale not found' })).to.be.true;
+    });
+  });
+
+  describe('Testando a função updateSale', () => {
+    const req = {};
+    const res = {};
+
+    beforeEach(() => {
+      req.params = { id: 1 };
+      req.body = [{ productId: 1, quantity: 1 }];
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      
+      sinon.stub(service, 'updateSale').resolves({
+        code: 200,
+        update: { saleId: 1, itemsUpdated: [{ productId: 1, quantity: 1 }]},
+      });
+      
+      sinon.stub(model, 'findById').resolves(saleIdMockCC);
+    });
+
+    afterEach(() => sinon.restore());
+
+    it('Verifica se é retornado o código de resposta 200', async () => {
+      await controller.updateSale(req, res);
+      
+      expect(res.status.calledWith(200)).to.be.true;
+    });
+
+    it('Verifica se é retornado um objeto com os itens atualizados', async () => {
+      await controller.updateSale(req, res);
+      
+      expect(res.json.calledWith({
+        saleId: 1,
+        itemsUpdated: [{ productId: 1, quantity: 1 }]
+      })).to.be.true;
+    });
+  });
+
+  describe('Testando a função updateSale, caso o Id informado seja inválido', () => {
+    const req = {};
+    const res = {};
+
+    beforeEach(() => {
+      req.params = { id: 99 };
+      req.body = [{ productId: 1, quantity: 1 }];
+
+      res.status = sinon.stub().returns(res);
+      res.json = sinon.stub().returns();
+      
+      sinon.stub(service, 'updateSale').resolves({ code: 404, message: 'Sale not found' });
+    });
+
+    afterEach(() => sinon.restore());
+
+    it('Verifica se é retornado o código de resposta 404', async () => {
+      await controller.updateSale(req, res);
+    
+      expect(res.status.calledWith(404)).to.be.true;
+    });
+
+    it('Verifica se é retornado uma mensagem', async () => {
+      await controller.updateSale(req, res);
     
       expect(res.json.calledWith({ message: 'Sale not found' })).to.be.true;
     });
