@@ -59,6 +59,11 @@ const productService = {
 
     return { code: 204 };
   },
+  search: async (q) => {
+    const products = await model.search(q);
+
+    return { code: 200, products };
+  },
 };
 
 module.exports = productService;
