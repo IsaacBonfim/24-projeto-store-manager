@@ -36,6 +36,13 @@ const saleModel = {
 
     return sales;
   },
+  deleteSale: async (id) => {
+    const query = 'DELETE FROM StoreManager.sales WHERE id = ?;';
+
+    await connection.execute(query, [id]);
+
+    return true;
+  },
 };
 
 module.exports = saleModel;
