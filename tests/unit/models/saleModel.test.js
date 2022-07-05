@@ -84,4 +84,22 @@ describe('Realizando teste da camada Model de vendas', () => {
       expect(sale).to.be.equal(true);
     });
   });
+
+  describe('Testando a função updateSale', () => {
+    beforeEach(() => sinon.stub(connection, 'execute').resolves());
+
+    afterEach(() => sinon.restore());
+
+    it('Verifica se é retornado um objeto', async () => {
+      const sale = await model.updateSale({ id: 1, productId: 1, quantity: 1 });
+      
+      expect(sale).to.be.a('object');
+    });
+
+    it('Verifica se o objeto retornado contem a Id do produto e sua quantidade', async () => {
+      const sale = await model.updateSale({ id: 1, productId: 1, quantity: 1 });
+      
+      expect(sale).to.be.deep.equal({ productId: 1, quantity: 1 });
+    });
+  });
 });
