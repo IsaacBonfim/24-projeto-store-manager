@@ -159,4 +159,59 @@ describe('Realizando teste da camada Service de vendas', () => {
       expect(sale.message).to.be.equal('Sale not found');
     });
   });
+
+  describe('Testando a função updateSale', () => {
+    beforeEach(() => {
+      sinon.stub(model, 'updateSale').resolves();
+      sinon.stub(model, 'findById').resolves(saleIdMockSC);
+    });
+
+    afterEach(() => sinon.restore());
+
+    it('Verifica se um objeto é retornado', async () => {
+      const sale = await service.updateSale(1, [{ productId: 1, quantity: 1}]);
+      
+      expect(sale).to.be.a('object');
+    });
+
+    it('Verifica se o objeto retornado contem o código de resposta 200', async () => {
+      const sale = await service.updateSale(1, [{ productId: 1, quantity: 1}]);
+      
+      expect(sale.code).to.be.equal(200);
+    });
+
+    it('Verifica se é retonado as informações atualizadas', async () => {
+      const sale = await service.updateSale(1, [{ productId: 1, quantity: 1}]);
+      
+      expect(sale.update).to.be.deep
+        .equal({ saleId: 1, itemsUpdated: [{ productId: 1, quantity: 1}] });
+    });
+  });
+  
+  describe('Testando a função updateSale, caso o Id informado seja inválido', () => {
+    beforeEach(() => {
+      sinon.stub(model, 'updateSale').resolves(true);
+      sinon.stub(model, 'findById').resolves([]);
+    });
+
+    afterEach(() => sinon.restore());
+
+    it('Verifica se um objeto é retornado', async () => {
+      const sale = await service.updateSale(99);
+      
+      expect(sale).to.be.a('object');
+    });
+
+    it('Verifica se o objeto retornado contem o código de resposta 404', async () => {
+      const sale = await service.updateSale(99);
+      
+      expect(sale.code).to.be.equal(404);
+    });
+
+    it('Verifica se o objeto retornado contem uma mensagem', async () => {
+      const sale = await service.updateSale(99);
+      
+      expect(sale.message).to.be.equal('Sale not found');
+    });
+  });
 });
