@@ -38,6 +38,17 @@ const saleService = {
     
     return { code: 200, sale };
   },
+  deleteSale: async (id) => {
+    const sale = await model.findById(id);
+
+    if (sale.length === 0) {
+      return { code: 404, message: 'Sale not found' };
+    }
+
+    await model.deleteSale(id);
+
+    return { code: 204 };
+  },
 };
 
 module.exports = saleService;
