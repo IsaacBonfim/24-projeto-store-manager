@@ -8,6 +8,22 @@ const addProduct = ({ productId, quantity }) => {
   return { productId, quantity };
 };
 
+const saleValidation = async (id) => {
+  const sale = await model.findById(id);
+
+  if (sale.length === 0) {
+    return false;
+  }
+
+  return true;
+};
+
+const updateProds = ({ productId, quantity }) => {
+  model.updateSale({ id: idSale, productId, quantity });
+
+  return { productId, quantity };
+};
+
 const saleService = {
   addSale: async (products) => {
     idSale = await model.addSale();
@@ -37,6 +53,19 @@ const saleService = {
       }));
     
     return { code: 200, sale };
+  },
+  updateSale: async (id, products) => {
+    const sale = await saleValidation(id);
+
+    if (sale) {
+      return { code: 404, message: 'Sale not found' };
+    }
+
+    idSale = id;
+
+    const updatedList = products.map(updateProds);
+
+    return { code: 200, update: { saleId: id, updatedList } };
   },
   deleteSale: async (id) => {
     const sale = await model.findById(id);
