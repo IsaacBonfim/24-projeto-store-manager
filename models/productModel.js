@@ -33,6 +33,14 @@ const productModel = {
 
     return true;
   },
+  search: async (q) => {
+    const query = `SELECT * FROM StoreManager.products
+      WHERE name LIKE CONCAT('%', ?, '%');`;
+    
+    const [products] = await connection.execute(query, [q]);
+
+    return products;
+  },
 };
 
 module.exports = productModel;
