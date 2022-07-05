@@ -66,4 +66,22 @@ describe('Realizando teste da camada Model de vendas', () => {
       expect(sales[0]).to.be.deep.equal(salesMockSC[0]);
     });
   });
+
+  describe('Testando a função deleteSale', () => {
+    beforeEach(() => sinon.stub(connection, 'execute').resolves());
+
+    afterEach(() => sinon.restore());
+
+    it('Verifica se o retorno é booleano', async () => {
+      const sale = await model.deleteSale(1);
+      
+      expect(sale).to.be.a('boolean');
+    });
+
+    it('Verifica se ao deletar uma venda retorna "true"', async () => {
+      const sale = await model.deleteSale(1);
+      
+      expect(sale).to.be.equal(true);
+    });
+  });
 });
